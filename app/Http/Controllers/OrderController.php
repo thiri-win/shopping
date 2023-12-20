@@ -50,8 +50,8 @@ class OrderController extends Controller
 
 
         $input = $request->all();
-        $input['user_id'] = auth->id;
-
+        // $input['user_id'] = auth()->id;
+        dd(Auth::id());
         $input['grand_total'] = $grand_total;
         $input['item_count'] = $total_count;
         Order::create($input);
