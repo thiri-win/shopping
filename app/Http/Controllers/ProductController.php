@@ -168,6 +168,7 @@ class ProductController extends Controller
                 "image" => $product->image
             ];
         }
+        // dd($cart);
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }

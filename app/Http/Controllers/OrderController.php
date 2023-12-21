@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -50,24 +51,21 @@ class OrderController extends Controller
 
 
         $input = $request->all();
-        // $input['user_id'] = auth()->id;
-        dd(Auth::id());
+        $input['user_id'] = Auth::user()->id;
         $input['grand_total'] = $grand_total;
         $input['item_count'] = $total_count;
-        Order::create($input);
-
+        $order = Order::create($input);
+        
         // $orders = Order::orderBy('id','desc')->paginate(1);
         $orders['or'] = Order::orderBy('id');
-        dd($orders['or']);
         // $order_id=$orders->id;
         $cart = session()->get('cart');
-
         foreach($cart as $k=>$v)
         {
             OrderItem::create([
-                'order_id'=>$orders->id,
+                'order_id'=>$order->id,
                 'product_id'=>1,
-                'quantity'=>$v['item_count'],
+                'quantity'=>$v['quantity'],
                 'price'=>$v['price'],
             ]);
 
